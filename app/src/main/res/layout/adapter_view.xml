@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/cardview_dark_background"
+            app:cardElevation="6dp"
+            card_view:cardCornerRadius="4dp"
+            card_view:cardUseCompatPadding="true">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    app:srcCompat="@android:color/transparent" />
+
+                <TextView
+                    android:id="@+id/textViewNombreReceta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toEndOf="@+id/imageView"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/background_light"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textViewDescripcion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textView4"
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@+id/imageView"
+                    android:text="textView"
+                    android:textColor="@android:color/background_light"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textViewDescripcion"
+                    android:layout_below="@+id/textViewNombreReceta"
+                    android:text="@string/descripcion"
+                    android:textColor="@android:color/background_light" />
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

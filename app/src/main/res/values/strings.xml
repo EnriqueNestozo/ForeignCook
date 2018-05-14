@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Foreign Cook</string>
+    <string name="descripcion">Descripción</string>
+    <string name="boton_editar">Editar</string>
+    <string name="boton_eliminar">Eliminar</string>
+    <string name="string_receta">Recetas</string>
+    <string name="string_likes">Likes</string>
+    <string name="boton_editarPerfil">Editar perfil</string>
+    <string name="string_nombre">Nombre de receta</string>
+</resources>
