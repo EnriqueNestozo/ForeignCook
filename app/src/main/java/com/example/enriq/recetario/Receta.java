@@ -2,7 +2,11 @@ package com.example.enriq.recetario;
 
 import android.graphics.Bitmap;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
+import java.util.StringTokenizer;
 
 /**
  * Created by enriq on 02/05/2018.
@@ -16,6 +20,47 @@ public class Receta implements Serializable{
     private String pasos="";
     private String categoria="";
     private String linkVideo="";
+    private int idReceta = 0;
+    private int likes=0;
+    private String correo="";
+
+    public Receta(JSONObject jsonReceta) throws JSONException {
+        this.idReceta = jsonReceta.getInt("idReceta");
+        //this.descripcion = jsonReceta.getString("descripcion");
+        this.nombreReceta = jsonReceta.getString("nombreReceta");
+        this.ingredientes = jsonReceta.getString("ingredientes");
+        this.pasos = jsonReceta.getString("procedimiento");
+        this.categoria = jsonReceta.getString("categoria");
+        this.linkVideo = jsonReceta.getString("linkVideo");
+        this.likes = jsonReceta.getInt("likes");
+        this.correo = jsonReceta.getString("correo");
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public int getIdReceta() {
+        return idReceta;
+    }
+
+    public void setIdReceta(int idReceta) {
+        this.idReceta = idReceta;
+    }
+
+
 
     public Bitmap getImagenReceta() {
         return imagenReceta;

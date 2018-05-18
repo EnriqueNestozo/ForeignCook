@@ -33,8 +33,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circleViewFotoPerfil"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_below="@+id/imageView"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="8dp"
@@ -46,12 +46,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="150dp"
         android:scrollbars="vertical"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -64,7 +63,7 @@
         android:layout_marginTop="28dp"
         android:text="Jorge Martinez Lopez"
         android:textColor="@android:color/background_light"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toEndOf="@+id/circleViewFotoPerfil"
@@ -120,18 +119,19 @@
 
     <Button
         android:id="@+id/buttonEditar"
-        style="@android:style/Widget.Material.Button.Colored"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="29dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="50dp"
+        android:background="@color/colorAccent"
         android:text="@string/boton_editarPerfil"
         android:textColor="@android:color/background_light"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewFondo"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintEnd_toStartOf="@+id/textView6"
+        app:layout_constraintStart_toEndOf="@+id/textViewNumeroRecetas"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
@@ -145,7 +145,7 @@
         android:autoText="false"
         android:elegantTextHeight="false"
         android:maxHeight="120dp"
-        android:maxWidth="220dp"
+        android:maxWidth="180dp"
         android:text="Chef profesional, amante de los pasteles"
         app:layout_constraintBottom_toTopOf="@+id/buttonEditar"
         app:layout_constraintEnd_toEndOf="parent"

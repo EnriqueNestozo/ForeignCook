@@ -59,13 +59,11 @@
 
                 <Button
                     android:id="@+id/buttonEditar"
-                    style="@android:style/Widget.Material.Button.Colored"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
+                    android:layout_height="35dp"
+                    android:layout_alignEnd="@+id/imageView"
                     android:layout_below="@+id/imageView"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="14dp"
+                    android:layout_marginEnd="14dp"
                     android:background="@color/colorAccent"
                     android:elevation="2dp"
                     android:text="@string/boton_editar"
@@ -74,12 +72,10 @@
 
                 <Button
                     android:id="@+id/buttonEliminar"
-                    style="@android:style/Widget.Material.Button.Colored"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/buttonEditar"
-                    android:layout_alignBottom="@+id/buttonEditar"
+                    android:layout_height="35dp"
                     android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/imageView"
                     android:layout_marginEnd="14dp"
                     android:background="@color/colorAccent"
                     android:elevation="2dp"
