@@ -1,7 +1,7 @@
 package com.example.enriq.recetario;
 
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+
+import com.example.enriq.recetario.tareas.PosteoTask;
+import com.example.enriq.recetario.utilerias.Constantes;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,111 +76,42 @@ public class PosteoRecetaActivity extends AppCompatActivity {
 
     }
 
+
+
     public void publicar(View view){
-        receta = new Receta();
-        receta.setIdReceta(receta.getIdReceta());
-        receta.setNombreReceta(nombre.getText().toString());
-        receta.setDescripcion(descripcion.getText().toString());
-        receta.setCategoria(categoria.getSelectedItem().toString());
-        receta.setIngredientes(ingredientes.getText().toString());
-        receta.setPasos(pasos.getText().toString());
-        receta.setLinkVideo(url.getText().toString());
-        receta.setCorreo("enrique@gmail.com");
-        //nuevaReceta.setImagenReceta(imagen.getI);
-        new PosteoTask().execute();
-    }
+        if(!validarCamposObligatorios()){
+            receta = new Receta();
+            Context context = this;
+            receta.setIdReceta(receta.getIdReceta());
+            receta.setNombreReceta(nombre.getText().toString());
+            receta.setDescripcion(descripcion.getText().toString());
+            receta.setCategoria(categoria.getSelectedItem().toString());
+            receta.setIngredientes(ingredientes.getText().toString());
+            receta.setPasos(pasos.getText().toString());
+            receta.setLinkVideo(url.getText().toString());
+            receta.setCorreo("enrique@gmail.com");
+            //nuevaReceta.setImagenReceta(imagen.getI);
+            new PosteoTask(receta,this).execute();
+        }else{
+            AlertDialog.Builder builder = new AlertDialog.Builder(PosteoRecetaActivity.this);
+            builder.setTitle("Campos vacíos");
+            builder.setMessage("Existen campos obligatorios que estan vacíos")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
 
-    class PosteoTask extends AsyncTask<Void,Void,Boolean>{
-        boolean resultado=false;
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            String strUrl = "http://192.168.0.105:11866/ForeignCook2/webresources/persistencia.recetas/"+receta.getCorreo();
-            System.out.println(strUrl);
-            String metodoEnvio = "POST";
-            if(receta.getIdReceta()>0){
-                strUrl+="/"+receta.getIdReceta();
-                metodoEnvio="PUT";
-            }
-            try {
-                URL url = new URL(strUrl);
-                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-                conn.setRequestProperty("Content-Type","application/json");
-                conn.setRequestProperty("Accept","application/json");
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-                conn.setRequestMethod(metodoEnvio);
-                conn.connect();
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.accumulate("idReceta",receta.getIdReceta());
-                jsonObject.accumulate("nombreReceta",receta.getNombreReceta());
-                jsonObject.accumulate("ingredientes",receta.getIngredientes());
-                jsonObject.accumulate("procedimiento",receta.getPasos());
-                jsonObject.accumulate("categoria",receta.getCategoria());
-                jsonObject.accumulate("likes",receta.getLikes());
-                jsonObject.accumulate("linkVideo",receta.getLinkVideo());
-                jsonObject.accumulate("correo",receta.getCorreo());
-
-                /*
-                String cadJson = "{";
-                cadJson += "\"idReceta\":\""+receta.getIdReceta()+"\", ";
-                cadJson += "\"nombreReceta\":\""+receta.getNombreReceta()+"\", ";
-                cadJson += "\"ingredientes\":\""+receta.getIngredientes()+"\", ";
-                cadJson += "\"procedimiento\": \""+receta.getPasos()+"\", ";
-                cadJson += "\"categoria\": \""+receta.getCategoria()+"\", ";
-                cadJson += "\"likes\": \""+receta.getLikes()+"\", ";
-                cadJson += "\"linkVideo\": \""+receta.getLinkVideo()+"\", ";
-                cadJson += "\"correo\": \""+receta.getCorreo()+"\" ";
-                cadJson += "}";
-                */
-                System.out.println(jsonObject);
-                OutputStream outputStream = conn.getOutputStream();
-                BufferedWriter escritor = new BufferedWriter(new OutputStreamWriter(outputStream));
-                escritor.write(String.valueOf(jsonObject));
-                escritor.flush();
-
-                InputStream input;
-                if (conn.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
-                    input = conn.getInputStream();
-                } else {
-                    input = conn.getErrorStream();
-
-                }
-
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(input));
-                String cad = bufferedReader.readLine();
-                System.out.println("cad" + cad);
-                resultado = true;
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return resultado;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-
-            if (success) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(PosteoRecetaActivity.this);
-                builder.setTitle("Guardado exitoso");
-                builder.setMessage("La receta ha sido creada con éxito.")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                                PosteoRecetaActivity.this.finish();
-                            }
-                        });
-
-                builder.create().show();
-            } else {
-
-            }
+            builder.create().show();
         }
     }
 
 
+    private boolean validarCamposObligatorios() {
+        boolean validos = true;
+        if(nombre.getText().equals("") || ingredientes.getText().equals("") || pasos.getText().equals("")){
+            validos = false;
+        }
+        return validos;
+    }
 }

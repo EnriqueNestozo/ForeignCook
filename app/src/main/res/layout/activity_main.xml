@@ -126,6 +126,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="50dp"
         android:background="@color/colorAccent"
+        android:onClick="editarPerfil"
         android:text="@string/boton_editarPerfil"
         android:textColor="@android:color/background_light"
         android:textSize="10sp"
