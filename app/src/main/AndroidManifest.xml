@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PosteoRecetaActivity" />
+        <activity android:name=".actividades.PosteoRecetaActivity" />
         <activity android:name=".actividades.InicioSesionActivity"></activity>
     </application>
 

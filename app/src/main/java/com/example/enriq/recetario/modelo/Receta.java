@@ -1,4 +1,4 @@
-package com.example.enriq.recetario;
+package com.example.enriq.recetario.modelo;
 
 import android.graphics.Bitmap;
 
@@ -26,7 +26,7 @@ public class Receta implements Serializable{
 
     public Receta(JSONObject jsonReceta) throws JSONException {
         this.idReceta = jsonReceta.getInt("idReceta");
-        //this.descripcion = jsonReceta.getString("descripcion");
+        this.descripcion = jsonReceta.getString("descripcion");
         this.nombreReceta = jsonReceta.getString("nombreReceta");
         this.ingredientes = jsonReceta.getString("ingredientes");
         this.pasos = jsonReceta.getString("procedimiento");
@@ -119,10 +119,5 @@ public class Receta implements Serializable{
     }
 
     public Receta(){
-    }
-
-    public Receta(String nombreReceta,String descripcion){
-        this.nombreReceta = nombreReceta;
-        this.descripcion = descripcion;
     }
 }

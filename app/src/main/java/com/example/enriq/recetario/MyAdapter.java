@@ -9,9 +9,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.enriq.recetario.actividades.PosteoRecetaActivity;
+import com.example.enriq.recetario.modelo.Receta;
+import com.example.enriq.recetario.modelo.Usuario;
+import com.example.enriq.recetario.tareas.EliminacionRecetaTask;
 
 import java.util.List;
 
@@ -22,6 +28,7 @@ import java.util.List;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener {
     List<Receta> recetas;
     private View.OnClickListener listener;
+    List<Usuario> usuarios;
 
     public void setOnClickListener(View.OnClickListener listener) {
         this.listener = listener;
@@ -33,6 +40,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
         TextView descripcion;
         Button botonEditar;
         Button botonEliminar;
+        TextView textViewPublicador;
+        TextView textViewLikes;
+
         public ViewHolder(View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.cardView);
@@ -40,11 +50,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
             descripcion = itemView.findViewById(R.id.textViewDescripcion);
             botonEditar = itemView.findViewById(R.id.buttonEditar);
             botonEliminar = itemView.findViewById(R.id.buttonEliminar);
+            textViewPublicador = itemView.findViewById(R.id.textViewPublicador);
+            textViewLikes = itemView.findViewById(R.id.textViewLikes);
         }
     }
 
-    public MyAdapter(List<Receta> recetas) {
+    public MyAdapter(List<Receta> recetas,List<Usuario> usuarios) {
         this.recetas = recetas;
+        this.usuarios = usuarios;
     }
 
     @Override
@@ -61,6 +74,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
     public void onBindViewHolder(final MyAdapter.ViewHolder holder, final int position) {
        holder.nombreReceta.setText(recetas.get(position).getNombreReceta());
        holder.descripcion.setText(recetas.get(position).getDescripcion());
+       holder.textViewPublicador.setText(usuarios.get(position).getNombre());
+       holder.textViewLikes.setText(Integer.toString(recetas.get(position).getLikes()));
        holder.botonEditar.setOnClickListener(new View.OnClickListener(){
 
            @Override
@@ -79,7 +94,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
                        .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                            @Override
                            public void onClick(DialogInterface dialogInterface, int i) {
-                               borrarReceta(view,recetas.get(position));
+                               borrarReceta(view,recetas.get(position),usuarios.get(position));
                            }
                        })
                        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -94,8 +109,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
        });
     }
 
-    private void borrarReceta(View view,Receta receta) {
+    private void borrarReceta(View view,Receta receta,Usuario usuario) {
         Toast.makeText(view.getContext(),"Borrado", Toast.LENGTH_SHORT).show();
+        new EliminacionRecetaTask(receta,recetas, this,usuario,usuarios).execute();
     }
 
     @Override

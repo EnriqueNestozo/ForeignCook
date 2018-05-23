@@ -1,13 +1,12 @@
 package com.example.enriq.recetario.tareas;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.RecyclerView;
 
-import com.example.enriq.recetario.PosteoRecetaActivity;
-import com.example.enriq.recetario.Receta;
+import com.example.enriq.recetario.actividades.PosteoRecetaActivity;
+import com.example.enriq.recetario.modelo.Receta;
+import com.example.enriq.recetario.modelo.Usuario;
 import com.example.enriq.recetario.utilerias.Constantes;
 
 import org.json.JSONException;
@@ -23,7 +22,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 
 /**
  * Created by enriq on 19/05/2018.
@@ -42,12 +40,12 @@ public class PosteoTask extends AsyncTask<Void,Void,Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... voids) {
-        String strUrl = Constantes.url() + "persistencia.recetas/"+receta.getCorreo();
+        String strUrl = Constantes.url+ "persistencia.recetas/"+receta.getCorreo();
         System.out.println(strUrl);
         String metodoEnvio = "POST";
         if(receta.getIdReceta()>0){
-            strUrl+="/"+receta.getIdReceta();
             metodoEnvio="PUT";
+            System.out.println("PUT");
         }
         try {
             URL url = new URL(strUrl);
@@ -61,12 +59,14 @@ public class PosteoTask extends AsyncTask<Void,Void,Boolean> {
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("idReceta",receta.getIdReceta());
             jsonObject.accumulate("nombreReceta",receta.getNombreReceta());
+            jsonObject.accumulate("descripcion",receta.getDescripcion());
             jsonObject.accumulate("ingredientes",receta.getIngredientes());
             jsonObject.accumulate("procedimiento",receta.getPasos());
             jsonObject.accumulate("categoria",receta.getCategoria());
             jsonObject.accumulate("likes",receta.getLikes());
             jsonObject.accumulate("linkVideo",receta.getLinkVideo());
             jsonObject.accumulate("correo",receta.getCorreo());
+            //nombreImagen
 
             System.out.println(jsonObject);
             OutputStream outputStream = conn.getOutputStream();
@@ -86,6 +86,7 @@ public class PosteoTask extends AsyncTask<Void,Void,Boolean> {
             String cad = bufferedReader.readLine();
             System.out.println("cad" + cad);
             resultado = true;
+            conn.disconnect();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {

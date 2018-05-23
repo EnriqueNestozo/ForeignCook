@@ -5,8 +5,6 @@ package com.example.enriq.recetario.utilerias;
  */
 
 public class Constantes {
-    public static String url(){
-        String url = "http://192.168.0.105:11866/ForeignCook2/webresources/";
-        return url;
-    }
+    public static final String url = "http://10.50.53.15:11866/ForeignCook/webresources/";
+    public static final String youtubeKey = "AIzaSyAfWtiQiRct5u4wi8CzSBH6y23u-Z6MRP8";
 }
