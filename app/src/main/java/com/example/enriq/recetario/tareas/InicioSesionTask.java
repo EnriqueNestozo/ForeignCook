@@ -36,10 +36,12 @@ public class InicioSesionTask extends AsyncTask<Void,Void,Boolean>{
 
     @Override
     protected Boolean doInBackground(Void... voids) {
+        boolean validacion;
+        HttpURLConnection conexion = null;
         try {
             String cadenaURL = "http://192.168.0.14:8080/Foreign/webresources/persistencia.usuarios/iniciarSesion/"+correo+"/"+contraseña;
             URL url = new URL(cadenaURL);
-            HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
+            conexion = (HttpURLConnection) url.openConnection();
             conexion.setRequestProperty("Content-Type", "application/json");
             conexion.setRequestProperty("Accept", "text/plain");
 
@@ -54,21 +56,27 @@ public class InicioSesionTask extends AsyncTask<Void,Void,Boolean>{
             BufferedReader lector = new BufferedReader(new InputStreamReader(entrada));
             String cadena = lector.readLine();
 
-            return cadena.equals("true");
+            validacion = cadena.equals("true");
 
         }catch (MalformedURLException e) {
-            return false;
+            validacion = false;
         } catch (IOException e) {
-            return false;
+            validacion = false;
+        }finally {
+            if(conexion != null){
+                conexion.disconnect();
+            }
         }
+        return validacion;
     }
 
     @Override
     protected void onPostExecute(final Boolean success){
         if(success){
+            HttpURLConnection conexion = null;
             try {
                 URL url = new URL("http://192.168.0.14:8080/Foreign/webresources/persistencia.usuarios/"+correo);
-                HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
+                conexion = (HttpURLConnection) url.openConnection();
                 conexion.setRequestProperty("Content-Type", "application/json");
                 conexion.setRequestProperty("Accept", "application/json");
 
@@ -95,6 +103,9 @@ public class InicioSesionTask extends AsyncTask<Void,Void,Boolean>{
             } catch (IOException ex) {
                 System.out.println("Error");
             }finally {
+                if(conexion != null){
+                    conexion.disconnect();
+                }
                 actividad.cargarInicioSesion(usuario);
             }
         }

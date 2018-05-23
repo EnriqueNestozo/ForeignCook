@@ -3,7 +3,9 @@ package com.example.enriq.recetario.modelo;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Usuario {
+import java.io.Serializable;
+
+public class Usuario implements Serializable{
     private String nombre;
     private String descripcion;
     private String correo;
@@ -35,7 +37,7 @@ public class Usuario {
 
     public Usuario(JSONObject usuarioJSON){
         try {
-            this.nombre = usuarioJSON.getString("nombre");
+            this.nombre = usuarioJSON.getString("nombreUsurio");
             this.descripcion = usuarioJSON.getString("descripcion");
             this.correo = usuarioJSON.getString("correo");
         } catch (JSONException e) {
@@ -78,7 +80,7 @@ public class Usuario {
     @Override
     public String toString(){
         String usuarioJSON = "{";
-        usuarioJSON += "\"nombre\":\""+this.nombre+"\",";
+        usuarioJSON += "\"nombreUsuario\":\""+this.nombre+"\",";
         usuarioJSON += "\"correo\":\""+this.correo+"\",";
         usuarioJSON += "\"descripcion\":\""+this.descripcion+"\",";
         usuarioJSON += "\"contrasena\":\""+this.contraseña+"\",";
