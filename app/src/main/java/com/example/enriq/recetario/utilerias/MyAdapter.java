@@ -1,4 +1,4 @@
-package com.example.enriq.recetario;
+package com.example.enriq.recetario.utilerias;
 
 
 import android.content.DialogInterface;
@@ -9,11 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.enriq.recetario.R;
 import com.example.enriq.recetario.actividades.PosteoRecetaActivity;
 import com.example.enriq.recetario.modelo.Receta;
 import com.example.enriq.recetario.modelo.Usuario;
@@ -26,9 +26,9 @@ import java.util.List;
  */
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener {
-    List<Receta> recetas;
+    private List<Receta> recetas;
     private View.OnClickListener listener;
-    List<Usuario> usuarios;
+    private List<Usuario> usuarios;
 
     public void setOnClickListener(View.OnClickListener listener) {
         this.listener = listener;

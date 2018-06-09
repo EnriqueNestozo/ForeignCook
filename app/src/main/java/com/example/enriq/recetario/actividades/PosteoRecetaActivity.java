@@ -5,8 +5,11 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -17,6 +20,7 @@ import com.example.enriq.recetario.R;
 import com.example.enriq.recetario.modelo.Receta;
 import com.example.enriq.recetario.tareas.PosteoTask;
 import com.example.enriq.recetario.utilerias.Constantes;
+import com.example.enriq.recetario.utilerias.TaskCallBack;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -27,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class PosteoRecetaActivity extends AppCompatActivity{
+public class PosteoRecetaActivity extends AppCompatActivity implements TaskCallBack{
     Receta receta;
     EditText nombre;
     Spinner categoria;
@@ -38,11 +42,21 @@ public class PosteoRecetaActivity extends AppCompatActivity{
     ImageView imagen;
     YouTubePlayerSupportFragment youTubePlayerFragment;
     YouTubePlayer youTubePlayer;
+    private Toolbar myToolbar;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.appbar_menu, menu);
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posteo_receta);
+        myToolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
         List<String> categorias = new ArrayList<>();
         categorias.add("Desayuno");
         categorias.add("Comida");
@@ -198,5 +212,21 @@ public class PosteoRecetaActivity extends AppCompatActivity{
 
 
         return validos;
+    }
+
+    @Override
+    public void hecho() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Guardado exitoso");
+        builder.setMessage("La receta ha sido creada con éxito.")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+
+        builder.create().show();
+
     }
 }

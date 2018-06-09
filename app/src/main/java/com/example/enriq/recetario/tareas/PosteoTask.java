@@ -1,5 +1,6 @@
 package com.example.enriq.recetario.tareas;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
@@ -8,6 +9,7 @@ import com.example.enriq.recetario.actividades.PosteoRecetaActivity;
 import com.example.enriq.recetario.modelo.Receta;
 import com.example.enriq.recetario.modelo.Usuario;
 import com.example.enriq.recetario.utilerias.Constantes;
+import com.example.enriq.recetario.utilerias.TaskCallBack;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,10 +32,10 @@ import java.net.URL;
 public class PosteoTask extends AsyncTask<Void,Void,Boolean> {
     boolean resultado=false;
     Receta receta;
-    PosteoRecetaActivity context;
+    TaskCallBack context;
     AlertDialog.Builder builder;
 
-    public PosteoTask(Receta receta, PosteoRecetaActivity context) {
+    public PosteoTask(Receta receta, TaskCallBack context) {
         this.receta = receta;
         this.context = context;
     }
@@ -77,15 +79,14 @@ public class PosteoTask extends AsyncTask<Void,Void,Boolean> {
             InputStream input;
             if (conn.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
                 input = conn.getInputStream();
+                resultado = true;
             } else {
                 input = conn.getErrorStream();
-
             }
-
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(input));
             String cad = bufferedReader.readLine();
             System.out.println("cad" + cad);
-            resultado = true;
+
             conn.disconnect();
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -94,6 +95,7 @@ public class PosteoTask extends AsyncTask<Void,Void,Boolean> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        System.out.println(resultado);
         return resultado;
     }
 
@@ -101,17 +103,7 @@ public class PosteoTask extends AsyncTask<Void,Void,Boolean> {
     protected void onPostExecute(final Boolean success) {
 
         if (success) {
-            builder = new AlertDialog.Builder(context);
-            builder.setTitle("Guardado exitoso");
-            builder.setMessage("La receta ha sido creada con éxito.")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                            context.finish();
-                        }
-                    });
-
-            builder.create().show();
+            context.hecho();
         } else {
 
         }

@@ -48,7 +48,7 @@ public class Usuario implements Serializable{
 
     public Usuario(JSONObject usuarioJSON){
         try {
-            this.nombre = usuarioJSON.getString("nombreUsurio");
+            this.nombre = usuarioJSON.getString("nombreUsuario");
             this.descripcion = usuarioJSON.getString("descripcion");
             this.correo = usuarioJSON.getString("correo");
         } catch (JSONException e) {

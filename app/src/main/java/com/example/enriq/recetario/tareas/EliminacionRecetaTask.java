@@ -2,9 +2,7 @@ package com.example.enriq.recetario.tareas;
 
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Adapter;
 
-import com.example.enriq.recetario.MyAdapter;
 import com.example.enriq.recetario.modelo.Receta;
 import com.example.enriq.recetario.modelo.Usuario;
 import com.example.enriq.recetario.utilerias.Constantes;

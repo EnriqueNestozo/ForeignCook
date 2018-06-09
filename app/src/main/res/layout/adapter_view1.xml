@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/Color1"
+        app:cardElevation="6dp"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewPublicador"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignTop="@+id/textView4"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/imagenpordefecto" />
+
+                <TextView
+                    android:id="@+id/textViewNombreReceta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="TextView"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textViewDescripcion"
+                    android:layout_below="@+id/textViewNombreReceta"
+                    android:text="@string/descripcion"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textViewDescripcion"
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp"
+                    android:layout_below="@+id/textView4"
+                    android:layout_toEndOf="@+id/imageView"
+                    android:text="textView"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Likes"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/likeButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".05"
+                        android:scaleType="center"
+                        card_view:srcCompat="@drawable/dislike"
+                        android:tag="dislike"/>
+
+                    <TextView
+                        android:id="@+id/textViewLikes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.95"
+                        android:text="0"
+                        android:textSize="24sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+
+
+    </android.support.v7.widget.CardView>
+
+</android.support.constraint.ConstraintLayout>
