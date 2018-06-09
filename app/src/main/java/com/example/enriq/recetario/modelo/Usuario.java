@@ -1,5 +1,7 @@
 package com.example.enriq.recetario.modelo;
 
+import android.graphics.Bitmap;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -11,6 +13,15 @@ public class Usuario implements Serializable{
     private String correo;
     private String nombreImagen;
     private String contraseña;
+    private transient Bitmap bitsImagen;
+
+    public Bitmap getBitsImagen() {
+        return bitsImagen;
+    }
+
+    public void setBitsImagen(Bitmap bitsImagen) {
+        this.bitsImagen = bitsImagen;
+    }
 
     public String getContraseña() {
         return contraseña;

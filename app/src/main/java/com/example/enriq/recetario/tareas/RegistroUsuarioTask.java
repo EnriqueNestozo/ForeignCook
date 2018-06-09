@@ -7,7 +7,7 @@ import android.support.v7.app.AlertDialog;
 
 import com.example.enriq.recetario.actividades.RegistrarUsuarioActivity;
 import com.example.enriq.recetario.modelo.Usuario;
-import com.example.enriq.recetario.utilerias.Formato;
+import com.example.enriq.recetario.utilerias.Constantes;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,7 +48,7 @@ public class RegistroUsuarioTask extends AsyncTask<Void,Void,Boolean>{
         boolean validacion = false;
 
         try {
-            URL url = new URL("http://"+ Formato.DIRECCION+":8080/ForeignCook/webresources/persistencia.usuarios");
+            URL url = new URL(Constantes.url+"persistencia.usuarios");
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             conn.setRequestProperty("Content-Type","application/json");
             conn.setRequestProperty("Accept","application/json");
@@ -90,9 +90,9 @@ public class RegistroUsuarioTask extends AsyncTask<Void,Void,Boolean>{
 
     @Override
     protected void onPostExecute(final Boolean success) {
-        if(success){
-            SubirImagenPerfilTask task = new SubirImagenPerfilTask(usuario,archivo);
 
+        if(success){
+            SubirImagenTask task = new SubirImagenTask(usuario,archivo,contexto);
             task.execute();
 
             AlertDialog.Builder dialogo = new AlertDialog.Builder(contexto);
@@ -105,7 +105,15 @@ public class RegistroUsuarioTask extends AsyncTask<Void,Void,Boolean>{
             });
             dialogo.show();
         }else{
-            System.out.println("pase");
+            AlertDialog.Builder dialogo = new AlertDialog.Builder(contexto);
+            dialogo.setTitle("Mensaje");
+            dialogo.setMessage("No se ha guardado el usuario").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                }
+            });
+            dialogo.show();
         }
     }
 }

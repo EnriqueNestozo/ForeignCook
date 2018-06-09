@@ -15,7 +15,6 @@ import java.security.NoSuchAlgorithmException;
 
 public class Formato {
 
-    public static String DIRECCION = "192.168.43.198";
 
     public static String encriptarContrasena(String contrasena){
         MessageDigest messageDigest = null;
@@ -52,14 +51,10 @@ public class Formato {
 
     }
 
-    public static void valor(){
-        Bitmap bitsImagen = null;
-//        try {
-//            //bitsImagen = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(),ruta);
-//        } catch (IOException e) {
-//            System.out.println("no se pudo crear el bitmap");
-//            e.printStackTrace();
-//        }
+    public static String codificarImagen(Bitmap bitsImagen){
+
+        String cadena64 = "";
+
         if(bitsImagen != null) {
 
             bitsImagen = Formato.cambiarCalidadDeImagen(bitsImagen,700,700);
@@ -67,11 +62,7 @@ public class Formato {
             bitsImagen.compress(Bitmap.CompressFormat.JPEG, 100, arreglo);
             byte[] imagenBytes = arreglo.toByteArray();
 
-            String imagenString = Base64.encodeToString(imagenBytes,Base64.DEFAULT);
-
-            Usuario usuario = new Usuario();
-            usuario.setCorreo("acdc@gmail.com");
-            usuario.setNombreImagen(imagenString);
+            cadena64 = Base64.encodeToString(imagenBytes,Base64.DEFAULT);
 
             try {
                 arreglo.flush();
@@ -80,7 +71,7 @@ public class Formato {
                 e.printStackTrace();
             }
 
-            new SubirImagenTask(usuario).execute();
         }
+        return cadena64;
     }
 }

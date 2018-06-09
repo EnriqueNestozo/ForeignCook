@@ -1,18 +1,23 @@
 package com.example.enriq.recetario.tareas;
 
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.example.enriq.recetario.actividades.InicioSesionActivity;
 import com.example.enriq.recetario.modelo.Usuario;
+import com.example.enriq.recetario.utilerias.Constantes;
 import com.example.enriq.recetario.utilerias.Formato;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -39,30 +44,43 @@ public class InicioSesionTask extends AsyncTask<Void,Void,Boolean>{
         boolean validacion;
         HttpURLConnection conexion = null;
         try {
-            String cadenaURL = "http://192.168.0.14:8080/Foreign/webresources/persistencia.usuarios/iniciarSesion/"+correo+"/"+contraseña;
-            URL url = new URL(cadenaURL);
-            conexion = (HttpURLConnection) url.openConnection();
-            conexion.setRequestProperty("Content-Type", "application/json");
-            conexion.setRequestProperty("Accept", "text/plain");
+            URL url = new URL(Constantes.url+"persistencia.usuarios/iniciarSesion");
+            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+            conn.setRequestProperty("Content-Type","application/json");
+            conn.setRequestProperty("Accept","application/json");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            conn.setRequestMethod("POST");
+            conn.connect();
+            Usuario usuario = new Usuario();
+            usuario.setCorreo(correo);
+            usuario.setContraseña(contraseña);
+            JSONObject usuarioJSON = new JSONObject(usuario.toString());
 
-            InputStream entrada;
+            OutputStream outputStream = conn.getOutputStream();
+            BufferedWriter escritor = new BufferedWriter(new OutputStreamWriter(outputStream));
+            escritor.write(String.valueOf(usuarioJSON));
+            escritor.flush();
 
-            if (conexion.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
-                entrada = conexion.getInputStream();
+            InputStream input;
+            if (conn.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
+                input = conn.getInputStream();
             } else {
-                entrada = conexion.getErrorStream();
+                input = conn.getErrorStream();
             }
 
-            BufferedReader lector = new BufferedReader(new InputStreamReader(entrada));
-            String cadena = lector.readLine();
-
-            validacion = cadena.equals("true");
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(input));
+            String cadena = bufferedReader.readLine();
+            JSONObject respuesta = new JSONObject(cadena);
+            validacion = respuesta.getString("respuesta").equals("OK");
 
         }catch (MalformedURLException e) {
             validacion = false;
         } catch (IOException e) {
             validacion = false;
-        }finally {
+        } catch (JSONException e) {
+            validacion = false;
+        } finally {
             if(conexion != null){
                 conexion.disconnect();
             }
@@ -75,7 +93,7 @@ public class InicioSesionTask extends AsyncTask<Void,Void,Boolean>{
         if(success){
             HttpURLConnection conexion = null;
             try {
-                URL url = new URL("http://192.168.0.14:8080/Foreign/webresources/persistencia.usuarios/"+correo);
+                URL url = new URL(Constantes.url+"persistencia.usuarios/"+correo);
                 conexion = (HttpURLConnection) url.openConnection();
                 conexion.setRequestProperty("Content-Type", "application/json");
                 conexion.setRequestProperty("Accept", "application/json");
@@ -108,6 +126,8 @@ public class InicioSesionTask extends AsyncTask<Void,Void,Boolean>{
                 }
                 actividad.cargarInicioSesion(usuario);
             }
+        }else {
+            Toast.makeText(actividad,"El usuario o la contraseña son erroneos", Toast.LENGTH_SHORT).show();
         }
     }
 }

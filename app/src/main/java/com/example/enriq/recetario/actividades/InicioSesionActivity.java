@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.enriq.recetario.R;
 import com.example.enriq.recetario.modelo.Usuario;
@@ -45,7 +46,7 @@ public class InicioSesionActivity extends AppCompatActivity {
                 if(Validacion.validarFormatoContraseña(tfContraseña.getText().toString())){
                     new InicioSesionTask(tfCorreo.getText().toString().trim(),tfContraseña.getText().toString().trim(),this).execute();
                 }else{
-
+                    Toast.makeText(this,"Contraseña", Toast.LENGTH_SHORT).show();
                 }
             }
         }
