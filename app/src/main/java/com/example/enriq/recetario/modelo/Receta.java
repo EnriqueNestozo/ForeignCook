@@ -132,4 +132,13 @@ public class Receta implements Serializable{
 
     public Receta(){
     }
+
+    @Override
+    public String toString(){
+        String recetaJSON = "{";
+        recetaJSON += "\"idReceta\":\""+this.idReceta+"\",";
+        recetaJSON += "\"nombreImagen\":\""+this.nombreReceta+"\"";
+        recetaJSON += "}";
+        return recetaJSON;
+    }
 }

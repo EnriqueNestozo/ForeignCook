@@ -206,8 +206,8 @@ public class PosteoRecetaActivity extends AppCompatActivity implements TaskCallB
             receta.setIngredientes(ingredientes.getText().toString());
             receta.setPasos(pasos.getText().toString());
             receta.setLinkVideo(url.getText().toString());
-            receta.setCorreo("enrique@gmail.com");
-            //nuevaReceta.setImagenReceta(imagen.getI);
+            receta.setCorreo(MenuPrincipalActivity.usuario.getCorreo());
+            receta.setImagenReceta(foto);
             new PosteoTask(receta,this).execute();
         }else{
             AlertDialog.Builder builder = new AlertDialog.Builder(PosteoRecetaActivity.this);

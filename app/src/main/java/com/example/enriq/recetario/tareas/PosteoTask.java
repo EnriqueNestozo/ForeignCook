@@ -85,7 +85,8 @@ public class PosteoTask extends AsyncTask<Void,Void,Boolean> {
             }
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(input));
             String cad = bufferedReader.readLine();
-            System.out.println("cad" + cad);
+            JSONObject salida = new JSONObject(cad);
+            receta.setIdReceta(salida.getInt("idReceta"));
 
             conn.disconnect();
         } catch (MalformedURLException e) {
@@ -104,6 +105,7 @@ public class PosteoTask extends AsyncTask<Void,Void,Boolean> {
 
         if (success) {
             context.hecho();
+            new SubirImagenRecetaTask(receta,receta.getImagenReceta()).execute();
         } else {
 
         }

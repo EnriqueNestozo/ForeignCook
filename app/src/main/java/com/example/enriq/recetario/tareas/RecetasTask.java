@@ -7,6 +7,7 @@ package com.example.enriq.recetario.tareas;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
+import com.example.enriq.recetario.actividades.MenuPrincipalActivity;
 import com.example.enriq.recetario.modelo.Receta;
 import com.example.enriq.recetario.modelo.Usuario;
 import com.example.enriq.recetario.utilerias.Constantes;
@@ -48,7 +49,7 @@ public class RecetasTask extends AsyncTask<Void,Void,Boolean> {
         URL url;
         try {
             if(tipoTask==0){
-                url = new URL(Constantes.url + "persistencia.recetas/buscarPorUsuario/jose@gmail.com");
+                url = new URL(Constantes.url + "persistencia.recetas/buscarPorUsuario/"+ MenuPrincipalActivity.usuario.getCorreo());
             }else{
                 url = new URL(Constantes.url + "persistencia.recetas");
             }
