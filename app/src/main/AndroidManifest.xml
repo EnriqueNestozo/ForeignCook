@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.enriq.recetario">
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <!--Permiso para escribir (y leer) en el almacenamiento externo-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--Para indicar en google play que es necesario que el equipo cuente con camara para poder usar la app -->
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
+
 
     <application
         android:allowBackup="true"
@@ -17,7 +24,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".actividades.InicioSesionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,8 +32,23 @@
             </intent-filter>
         </activity>
         <activity android:name=".actividades.PosteoRecetaActivity" />
-        <activity android:name=".actividades.InicioSesionActivity"/>
-        <activity android:name=".actividades.RegistrarUsuarioActivity"/>
+        <activity android:name=".actividades.MenuPrincipalActivity" />
+        <activity android:name=".actividades.RegistrarUsuarioActivity" />
+        <activity android:name=".actividades.MisRecetasActivity" />
+        <activity android:name=".actividades.VisualizarRecetaActivity" />
+        <activity android:name=".actividades.VerComentariosActivity"></activity>
+
+        <provider
+            android:authorities="com.example.enriq.fileprovider"
+            android:name="android.support.v4.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths">
+
+            </meta-data>
+        </provider>
     </application>
+
+
 
 </manifest>

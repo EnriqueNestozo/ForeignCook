@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android" >
     <item
         android:id="@+id/app_bar_search"
+        app:actionViewClass="android.widget.SearchView"
         android:icon="@drawable/ic_search_black_24dp"
         android:orderInCategory="1"
         android:title="Search"
@@ -10,8 +11,8 @@
     <item
         android:id="@+id/perfil"
         android:icon="@drawable/usericon"
+        android:orderInCategory="3"
         android:title="imagenPerfil"
-        android:orderInCategory="2"
         app:showAsAction="always" />
 </menu>
 

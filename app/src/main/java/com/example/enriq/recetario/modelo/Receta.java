@@ -2,6 +2,8 @@ package com.example.enriq.recetario.modelo;
 
 import android.graphics.Bitmap;
 
+import com.example.enriq.recetario.utilerias.ConvertidorBitmap;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,6 +16,7 @@ import java.util.StringTokenizer;
 
 public class Receta implements Serializable{
     private Bitmap imagenReceta=null;
+    private ConvertidorBitmap bitmap;
     private String nombreReceta="";
     private String descripcion="";
     private String ingredientes="";
@@ -34,6 +37,15 @@ public class Receta implements Serializable{
         this.linkVideo = jsonReceta.getString("linkVideo");
         this.likes = jsonReceta.getInt("likes");
         this.correo = jsonReceta.getString("correo");
+    }
+
+
+    public ConvertidorBitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(ConvertidorBitmap bitmap) {
+        this.bitmap = bitmap;
     }
 
     public int getLikes() {

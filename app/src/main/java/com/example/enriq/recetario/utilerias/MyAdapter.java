@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
         Button botonEliminar;
         TextView textViewPublicador;
         TextView textViewLikes;
+        ImageView foto;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -52,6 +54,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
             botonEliminar = itemView.findViewById(R.id.buttonEliminar);
             textViewPublicador = itemView.findViewById(R.id.textViewPublicador);
             textViewLikes = itemView.findViewById(R.id.textViewLikes);
+            foto = itemView.findViewById(R.id.imageView);
         }
     }
 

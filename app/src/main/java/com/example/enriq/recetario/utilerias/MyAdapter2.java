@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.enriq.recetario.R;
 import com.example.enriq.recetario.actividades.PosteoRecetaActivity;
+import com.example.enriq.recetario.actividades.VerComentariosActivity;
 import com.example.enriq.recetario.actividades.VisualizarRecetaActivity;
 import com.example.enriq.recetario.modelo.Receta;
 import com.example.enriq.recetario.modelo.Usuario;
@@ -47,6 +48,7 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> impl
         TextView textViewPublicador;
         TextView textViewLikes;
         ImageView likeButton;
+        ImageView commentsButton;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -56,6 +58,7 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> impl
             textViewPublicador = itemView.findViewById(R.id.textViewPublicador);
             textViewLikes = itemView.findViewById(R.id.textViewLikes);
             likeButton = itemView.findViewById(R.id.likeButton);
+            commentsButton = itemView.findViewById(R.id.commetsButton);
         }
     }
 
@@ -87,11 +90,18 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> impl
                 v.getContext().startActivity(intento);
             }
         });
+        holder.commentsButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intento = new Intent(view.getContext(), VerComentariosActivity.class);
+                intento.putExtra("Receta",recetas.get(position));
+                view.getContext().startActivity(intento);
+            }
+        });
         holder.likeButton.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View view) {
-                System.out.println(holder.likeButton.getTag().toString());
                 if(!holder.likeButton.getTag().toString().equals("like")) {
                     holder.likeButton.setImageResource(R.drawable.like);
                     recetas.get(position).setLikes(recetas.get(position).getLikes()+1);

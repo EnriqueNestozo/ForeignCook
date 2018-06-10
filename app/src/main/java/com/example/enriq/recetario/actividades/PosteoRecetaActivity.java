@@ -2,6 +2,12 @@ package com.example.enriq.recetario.actividades;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,22 +33,29 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.google.android.youtube.player.YouTubePlayerView;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
 public class PosteoRecetaActivity extends AppCompatActivity implements TaskCallBack{
-    Receta receta;
-    EditText nombre;
-    Spinner categoria;
-    EditText descripcion;
-    EditText ingredientes;
-    EditText pasos;
-    EditText url;
-    ImageView imagen;
-    YouTubePlayerSupportFragment youTubePlayerFragment;
-    YouTubePlayer youTubePlayer;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int SELECT_FILE = 0;
+    private Receta receta;
+    private EditText nombre;
+    private Spinner categoria;
+    private EditText descripcion;
+    private EditText ingredientes;
+    private EditText pasos;
+    private EditText url;
+    private ImageView imagen;
+    private YouTubePlayerSupportFragment youTubePlayerFragment;
+    private YouTubePlayer youTubePlayer;
     private Toolbar myToolbar;
+    private Bitmap foto;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -73,7 +86,7 @@ public class PosteoRecetaActivity extends AppCompatActivity implements TaskCallB
         ingredientes = findViewById(R.id.editTextIngredientes);
         pasos = findViewById(R.id.editTextPasos);
         url = findViewById(R.id.editTextVideo);
-        imagen = findViewById(R.id.imageView);
+        imagen = findViewById(R.id.imageViewReceta);
         nombre = findViewById(R.id.editTextNombre);
 
 
@@ -107,10 +120,82 @@ public class PosteoRecetaActivity extends AppCompatActivity implements TaskCallB
             receta = new Receta();
         }
 
+        imagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final CharSequence[] items = {"Tomar foto", "Elegir de la galería", "Cancelar"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setTitle("Agrega una foto");
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+
+                        if (items[item].equals("Tomar foto")) {
+                            dispatchTakePictureIntent();
+                        } else if (items[item].equals("Elegir de la galería")) {
+                            Intent intent = new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            intent.setType("image/*");
+                            startActivityForResult(intent,SELECT_FILE);
+                        } else if (items[item].equals("Cancelar")) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                builder.show();
+            }
+        });
+
 
 
     }
+    //delega la actividad de tomar la foto
+    private void dispatchTakePictureIntent() {
+        Intent foto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //si hay alguna actividad externa que puede realizar el intento de tomar foto inicia la primera
+        if (foto.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = crearImagen();
+            } catch(Exception e ) {
 
+            }
+            if (photoFile != null) {
+                Uri photoUri = FileProvider.getUriForFile(this,
+                        "com.example.enriq.fileprovider", photoFile);
+                foto.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                startActivityForResult(foto, REQUEST_IMAGE_CAPTURE);
+            }
+        }
+    }
+
+    private String fotoActual;
+
+    private File crearImagen() throws IOException {
+        String fecha = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imgFileName = "JPEG_"+fecha+"_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(imgFileName, ".jpg", storageDir);
+        fotoActual = image.getAbsolutePath();
+        return image;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            foto = (Bitmap) extras.get("data");
+            imagen.setImageBitmap(foto);
+        }else if(requestCode==SELECT_FILE && resultCode == RESULT_OK){
+            Uri ruta = data.getData();
+            imagen.setImageURI(ruta);
+            try {
+                foto = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(),ruta);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 
     public void publicar(View view){
