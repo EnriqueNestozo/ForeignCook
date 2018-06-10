@@ -68,7 +68,7 @@
                     android:layout_marginTop="15dp"
                     android:ems="10"
                     android:hint="ejemplo@gmail.com"
-                    android:inputType="textPersonName" />
+                    android:inputType="textEmailAddress" />
 
                 <TextView
                     android:id="@+id/textView7"

@@ -50,7 +50,7 @@ public class SubirImagenTask extends AsyncTask<Void,Void,Boolean>{
 
         if(!usuario.getNombreImagen().equals("")) {
             try {
-                URL url = new URL(Constantes.url+"persistencia.usuarios/imagenesUsuarios");
+                URL url = new URL(Constantes.url+"persistencia.usuarios/foto");
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");
@@ -100,6 +100,7 @@ public class SubirImagenTask extends AsyncTask<Void,Void,Boolean>{
     protected void onPostExecute(Boolean success) {
         if(success){
             Toast.makeText(contexto,"Se ha subido la imagen", Toast.LENGTH_SHORT).show();
+            contexto.finish();
         }else{
             Toast.makeText(contexto,"No se ha subido la imagen", Toast.LENGTH_SHORT).show();
         }

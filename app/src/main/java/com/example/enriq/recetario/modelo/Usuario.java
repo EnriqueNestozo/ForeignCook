@@ -51,6 +51,8 @@ public class Usuario implements Serializable{
             this.nombre = usuarioJSON.getString("nombreUsuario");
             this.descripcion = usuarioJSON.getString("descripcion");
             this.correo = usuarioJSON.getString("correo");
+            this.nombreImagen = usuarioJSON.getString("nombreImagen");
+            this.contraseña = usuarioJSON.getString("contrasena");
         } catch (JSONException e) {
             e.printStackTrace();
         }

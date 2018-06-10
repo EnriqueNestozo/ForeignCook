@@ -45,35 +45,35 @@ public class InicioSesionTask extends AsyncTask<Void,Void,Boolean>{
         HttpURLConnection conexion = null;
         try {
             URL url = new URL(Constantes.url+"persistencia.usuarios/iniciarSesion");
-            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-            conn.setRequestProperty("Content-Type","application/json");
-            conn.setRequestProperty("Accept","application/json");
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
-            conn.setRequestMethod("POST");
-            conn.connect();
+            conexion = (HttpURLConnection)url.openConnection();
+            conexion.setRequestProperty("Content-Type","application/json");
+            conexion.setRequestProperty("Accept","application/json");
+            conexion.setDoInput(true);
+            conexion.setDoOutput(true);
+            conexion.setRequestMethod("POST");
+            conexion.connect();
+
             Usuario usuario = new Usuario();
             usuario.setCorreo(correo);
             usuario.setContraseña(contraseña);
             JSONObject usuarioJSON = new JSONObject(usuario.toString());
 
-            OutputStream outputStream = conn.getOutputStream();
+            OutputStream outputStream = conexion.getOutputStream();
             BufferedWriter escritor = new BufferedWriter(new OutputStreamWriter(outputStream));
             escritor.write(String.valueOf(usuarioJSON));
             escritor.flush();
 
             InputStream input;
-            if (conn.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
-                input = conn.getInputStream();
+            if (conexion.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
+                input = conexion.getInputStream();
             } else {
-                input = conn.getErrorStream();
+                input = conexion.getErrorStream();
             }
 
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(input));
             String cadena = bufferedReader.readLine();
             JSONObject respuesta = new JSONObject(cadena);
             validacion = respuesta.getString("respuesta").equals("OK");
-
         }catch (MalformedURLException e) {
             validacion = false;
         } catch (IOException e) {
@@ -91,41 +91,7 @@ public class InicioSesionTask extends AsyncTask<Void,Void,Boolean>{
     @Override
     protected void onPostExecute(final Boolean success){
         if(success){
-            HttpURLConnection conexion = null;
-            try {
-                URL url = new URL(Constantes.url+"persistencia.usuarios/"+correo);
-                conexion = (HttpURLConnection) url.openConnection();
-                conexion.setRequestProperty("Content-Type", "application/json");
-                conexion.setRequestProperty("Accept", "application/json");
-
-                InputStream entrada;
-
-                if(conexion.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST){
-                    entrada = conexion.getInputStream();
-                }else {
-                    entrada = conexion.getErrorStream();
-                }
-
-                BufferedReader lector = new BufferedReader(new InputStreamReader(entrada));
-                String cadena = lector.readLine();
-
-
-                try {
-                    JSONObject usuarioJSON = new JSONObject(cadena);
-                    usuario = new Usuario(usuarioJSON);
-                } catch (JSONException e) {
-                    usuario = null;
-                }
-
-
-            } catch (IOException ex) {
-                System.out.println("Error");
-            }finally {
-                if(conexion != null){
-                    conexion.disconnect();
-                }
-                actividad.cargarInicioSesion(usuario);
-            }
+            new UsuarioTask(actividad,correo).execute();
         }else {
             Toast.makeText(actividad,"El usuario o la contraseña son erroneos", Toast.LENGTH_SHORT).show();
         }

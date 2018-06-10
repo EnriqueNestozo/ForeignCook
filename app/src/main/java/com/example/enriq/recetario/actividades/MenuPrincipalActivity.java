@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.enriq.recetario.R;
 import com.example.enriq.recetario.modelo.Receta;
@@ -29,11 +30,13 @@ public class MenuPrincipalActivity extends AppCompatActivity implements TaskCall
     private List<Receta> recetas = new ArrayList<>();
     private List<Usuario> usuarios = new ArrayList<>();
     private Toolbar toolbar;
+    public static Usuario usuario;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.appbar_menu, menu);
+        Toast.makeText(this,usuario.getNombre(), Toast.LENGTH_SHORT).show();
         return true;
     }
 

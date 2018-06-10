@@ -25,7 +25,7 @@ public class InicioSesionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio_sesion);
-        tfContraseña = findViewById(R.id.tfContraseña);
+        tfContraseña = findViewById(R.id.tfContrasena);
         imagen = findViewById(R.id.imagen);
         tfCorreo = findViewById(R.id.tfCorreo);
     }
@@ -58,15 +58,12 @@ public class InicioSesionActivity extends AppCompatActivity {
 
     public void cargarInicioSesion(Usuario usuario){
         if(usuario != null){
-            AlertDialog.Builder dialogo = new AlertDialog.Builder(InicioSesionActivity.this);
-            dialogo.setTitle("Inicio de sesion");
-            dialogo.setMessage("BIENVENIDO").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    InicioSesionActivity.this.finish();
-                }
-            });
-            dialogo.show();
+            MenuPrincipalActivity.usuario = usuario;
+            Toast.makeText(this,"BIENVENIDO", Toast.LENGTH_SHORT).show();
+            Intent intento = new Intent(this,MenuPrincipalActivity.class);
+            intento.putExtra("usuario",usuario);
+            startActivity(intento);
+            this.finish();
         }
     }
 

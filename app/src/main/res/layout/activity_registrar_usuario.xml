@@ -81,7 +81,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/textView17"
+                        android:id="@+id/labelContrasena"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
                         android:gravity="center"
@@ -90,7 +90,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/textView18"
+                        android:id="@+id/labelReContrasena"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
                         android:gravity="left|center"

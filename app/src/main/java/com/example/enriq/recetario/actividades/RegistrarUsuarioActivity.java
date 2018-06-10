@@ -1,5 +1,6 @@
 package com.example.enriq.recetario.actividades;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,10 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.enriq.recetario.R;
 import com.example.enriq.recetario.modelo.Usuario;
+import com.example.enriq.recetario.tareas.EditarUsuarioTask;
 import com.example.enriq.recetario.tareas.RegistroUsuarioTask;
 import com.example.enriq.recetario.utilerias.Formato;
 import com.example.enriq.recetario.utilerias.Validacion;
@@ -30,45 +33,86 @@ public class RegistrarUsuarioActivity extends AppCompatActivity {
     private EditText tfContraseña;
     private EditText tfReContraseña;
     private EditText tfDescipcion;
+    private TextView labelContrasena;
+    private TextView labelReContrasena;
     private CircleImageView imagen;
     private EditText tfNombreUsuario;
     private Bitmap archivo;
+    private boolean edicion;
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar_usuario);
+        labelContrasena = findViewById(R.id.labelContrasena);
+        labelReContrasena = findViewById(R.id.labelReContrasena);
         tfContraseña = findViewById(R.id.tfContraseña);
         tfCorreo = findViewById(R.id.tfCorreo);
         tfReContraseña = findViewById(R.id.tfRecontraseña);
         tfDescipcion = findViewById(R.id.tfDescripcion);
         tfNombreUsuario = findViewById(R.id.tfNombreUsuario);
         imagen = findViewById(R.id.imagen);
+        if(MenuPrincipalActivity.usuario != null){
+            imagen.setImageBitmap(MenuPrincipalActivity.usuario.getBitsImagen());
+            tfContraseña.setVisibility(View.INVISIBLE);
+            tfReContraseña.setVisibility(View.INVISIBLE);
+            labelReContrasena.setVisibility(View.INVISIBLE);
+            labelContrasena.setVisibility(View.INVISIBLE);
+            tfCorreo.setText(MenuPrincipalActivity.usuario.getCorreo());
+            tfNombreUsuario.setText(MenuPrincipalActivity.usuario.getNombre());
+            tfDescipcion.setText(MenuPrincipalActivity.usuario.getDescripcion());
+            edicion = true;
+        }
     }
 
     public void accionRegistrarUsuario(View vista){
-        if(validarCampos()){
-            mostrarMensajeError("Hay campos vacios!");
-        }else{
-            if(validarContraseña()){
-                if(Validacion.validarFormatoCorreo(tfCorreo.getText().toString().trim())){
-
-                    Usuario usuario = new Usuario();
-                    usuario.setContraseña(Formato.encriptarContrasena(tfContraseña.getText().toString().trim()));
-                    usuario.setNombre(tfNombreUsuario.getText().toString().trim());
-                    usuario.setNombreImagen(tfCorreo.getText().toString().trim());
-                    if(!tfDescipcion.getText().toString().trim().isEmpty()){
-                        usuario.setDescripcion(tfDescipcion.getText().toString().trim());
-                    }
-                    usuario.setCorreo(tfCorreo.getText().toString().trim());
-                    new RegistroUsuarioTask(usuario,this,archivo).execute();
-                }else{
-                    Toast.makeText(this, "El formato del correo no es correcto", Toast.LENGTH_LONG).show();
+        if(edicion){
+            if(validarCamposEdicion()){
+                Toast.makeText(this, "Hay campos vacios", Toast.LENGTH_LONG).show();
+            }else {
+                Usuario usuario = new Usuario();
+                usuario.setNombre(tfNombreUsuario.getText().toString().trim());
+                usuario.setContraseña(MenuPrincipalActivity.usuario.getContraseña());
+                if (!tfDescipcion.getText().toString().trim().isEmpty()) {
+                    usuario.setDescripcion(tfDescipcion.getText().toString().trim());
                 }
-            }else{
-                mostrarMensajeError("La contraseña debe de tener 8 caracteres, una mayuscula y un número o no coincide las contraseñas");
+                usuario.setCorreo(tfCorreo.getText().toString().trim());
+                usuario.setNombreImagen(MenuPrincipalActivity.usuario.getNombreImagen());
+                if(archivo != null){
+                    MenuPrincipalActivity.usuario.setBitsImagen(archivo);
+                }
+                new EditarUsuarioTask(usuario,this,archivo).execute();
+            }
+        }else {
+            if (validarCampos()) {
+                mostrarMensajeError("Hay campos vacios!");
+            } else {
+                if (validarContraseña()) {
+                    if (Validacion.validarFormatoCorreo(tfCorreo.getText().toString().trim())) {
+
+                        Usuario usuario = new Usuario();
+                        usuario.setContraseña(Formato.encriptarContrasena(tfContraseña.getText().toString().trim()));
+                        usuario.setNombre(tfNombreUsuario.getText().toString().trim());
+                        usuario.setNombreImagen(tfCorreo.getText().toString().trim());
+                        if (!tfDescipcion.getText().toString().trim().isEmpty()) {
+                            usuario.setDescripcion(tfDescipcion.getText().toString().trim());
+                        }
+                        usuario.setCorreo(tfCorreo.getText().toString().trim());
+                        new RegistroUsuarioTask(usuario, this, archivo).execute();
+
+                    } else {
+                        Toast.makeText(this, "El formato del correo no es correcto", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    mostrarMensajeError("La contraseña debe de tener 8 caracteres, una mayuscula y un número o no coincide las contraseñas");
+                }
             }
         }
+    }
+
+    private boolean validarCamposEdicion() {
+        return tfCorreo.getText().toString().trim().isEmpty() || tfNombreUsuario.getText().toString().trim().isEmpty();
     }
 
     private boolean validarContraseña(){
