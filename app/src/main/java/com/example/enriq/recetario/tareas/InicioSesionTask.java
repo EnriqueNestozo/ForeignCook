@@ -72,6 +72,7 @@ public class InicioSesionTask extends AsyncTask<Void,Void,Boolean>{
 
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(input));
             String cadena = bufferedReader.readLine();
+            System.out.printf("cad"+cadena);
             JSONObject respuesta = new JSONObject(cadena);
             validacion = respuesta.getString("respuesta").equals("OK");
         }catch (MalformedURLException e) {

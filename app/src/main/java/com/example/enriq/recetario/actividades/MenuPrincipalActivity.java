@@ -17,6 +17,7 @@ import com.example.enriq.recetario.modelo.Receta;
 import com.example.enriq.recetario.modelo.Usuario;
 import com.example.enriq.recetario.tareas.RecetasTask;
 import com.example.enriq.recetario.utilerias.MyAdapter2;
+import com.example.enriq.recetario.utilerias.ProxyBitmap;
 import com.example.enriq.recetario.utilerias.TaskCallBack;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class MenuPrincipalActivity extends AppCompatActivity implements TaskCall
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.appbar_menu, menu);
-        Toast.makeText(this,usuario.getNombre(), Toast.LENGTH_SHORT).show();
+        toolbar.setTitleTextColor(getResources().getColor(R.color.cardview_light_background));
         return true;
     }
 
@@ -44,6 +45,7 @@ public class MenuPrincipalActivity extends AppCompatActivity implements TaskCall
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()== R.id.perfil){
             Intent intento = new Intent(this, MisRecetasActivity.class);
+            intento.putExtra("usuario",usuario);
             startActivity(intento);
         }
         return super.onOptionsItemSelected(item);
@@ -57,6 +59,10 @@ public class MenuPrincipalActivity extends AppCompatActivity implements TaskCall
         toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
+        Intent intento = getIntent();
+        usuario = (Usuario) intento.getSerializableExtra("usuario");
+
+        Toast.makeText(this,usuario.getNombre(), Toast.LENGTH_SHORT).show();
         myRecycleView = findViewById(R.id.my_recycler_view);
         myRecycleView.setHasFixedSize(true);
         //se crea el manejador del layout
@@ -66,7 +72,7 @@ public class MenuPrincipalActivity extends AppCompatActivity implements TaskCall
         myRecycleView.setLayoutManager(mLayoutManager);
 
         //se crea un nuevo adaptador con la lista de las recetas
-        mAdapter = new MyAdapter2(recetas,usuarios);
+        mAdapter = new MyAdapter2(recetas,usuarios,usuario);
 
         //se le asigna el adaptador a la vista
         myRecycleView.setAdapter(mAdapter);
@@ -75,6 +81,7 @@ public class MenuPrincipalActivity extends AppCompatActivity implements TaskCall
     @Override
     protected void onResume() {
         super.onResume();
+        mAdapter.notifyDataSetChanged();
         new RecetasTask(recetas,myRecycleView,this,usuarios,1).execute();
     }
 
@@ -86,6 +93,6 @@ public class MenuPrincipalActivity extends AppCompatActivity implements TaskCall
 
     @Override
     public void hecho() {
-
+        mAdapter.notifyDataSetChanged();
     }
 }

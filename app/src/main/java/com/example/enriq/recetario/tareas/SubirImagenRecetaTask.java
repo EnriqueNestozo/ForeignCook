@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.example.enriq.recetario.modelo.Receta;
 import com.example.enriq.recetario.utilerias.Constantes;
 import com.example.enriq.recetario.utilerias.Formato;
+import com.example.enriq.recetario.utilerias.TaskCallBack;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,14 +28,16 @@ public class SubirImagenRecetaTask extends AsyncTask<Void,Void,Boolean> {
 
     private Receta receta;
     private Bitmap imagen;
+    private TaskCallBack context;
 
     public SubirImagenRecetaTask(){
 
     }
 
-    public SubirImagenRecetaTask(Receta receta, Bitmap imagen) {
+    public SubirImagenRecetaTask(TaskCallBack context,Receta receta, Bitmap imagen) {
         this.receta = receta;
         this.imagen = imagen;
+        this.context = context;
     }
 
     @Override
@@ -91,5 +94,13 @@ public class SubirImagenRecetaTask extends AsyncTask<Void,Void,Boolean> {
         }
 
         return validacion;
+    }
+
+    @Override
+    protected void onPostExecute(Boolean success) {
+        super.onPostExecute(success);
+        if(success){
+            context.hecho();
+        }
     }
 }

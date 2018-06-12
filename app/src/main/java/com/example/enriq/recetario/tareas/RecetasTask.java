@@ -4,6 +4,8 @@ package com.example.enriq.recetario.tareas;
  * Created by enriq on 18/05/2018.
  */
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 
@@ -11,6 +13,7 @@ import com.example.enriq.recetario.actividades.MenuPrincipalActivity;
 import com.example.enriq.recetario.modelo.Receta;
 import com.example.enriq.recetario.modelo.Usuario;
 import com.example.enriq.recetario.utilerias.Constantes;
+import com.example.enriq.recetario.utilerias.ProxyBitmap;
 import com.example.enriq.recetario.utilerias.TaskCallBack;
 
 import org.json.JSONArray;
@@ -22,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
@@ -46,6 +50,7 @@ public class RecetasTask extends AsyncTask<Void,Void,Boolean> {
     protected Boolean doInBackground(Void... voids) {
         boolean resultado = false;
         misRecetas.clear();
+        usuarios.clear();
         URL url;
         try {
             if(tipoTask==0){
@@ -68,14 +73,21 @@ public class RecetasTask extends AsyncTask<Void,Void,Boolean> {
             String cad = bufferedReader.readLine();
             System.out.println(cad);
             JSONArray jsonRespuesta = new JSONArray(cad);
+            Receta receta = null;
             for(int i=0;i<jsonRespuesta.length(); i++) {
                 try {
                     JSONObject jsonReceta = jsonRespuesta.getJSONObject(i);
                     JSONObject jsonUsuario = jsonReceta.getJSONObject("correo");
-                    System.out.println("json:" + jsonReceta);
-                    misRecetas.add(new Receta(jsonReceta));
+                    receta = new Receta(jsonReceta);
                     usuarios.add(new Usuario(jsonUsuario));
+                    System.out.println("json:" + jsonReceta);
                     //RecetaListener.recetaEncontrada(new Receta(jsonReceta));
+                    url = new URL(Constantes.URLImagenReceta+receta.getIdReceta()+".jpg");
+                    InputStream inputStream = url.openConnection().getInputStream();
+                    Bitmap bmp = BitmapFactory.decodeStream(inputStream);
+                    Bitmap resized = Bitmap.createScaledBitmap(bmp, 300, 200, true);
+                    receta.setBitmap(new ProxyBitmap(resized));
+                    misRecetas.add(receta);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -86,13 +98,14 @@ public class RecetasTask extends AsyncTask<Void,Void,Boolean> {
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
+
+
         return resultado;
     }
 
     @Override
     protected void onPostExecute(final Boolean success) {
         if (success) {
-            this.recyclerView.getAdapter().notifyDataSetChanged();
             context.hecho();
         } else {
             System.out.println("NO se pudieron cargar las recetas");

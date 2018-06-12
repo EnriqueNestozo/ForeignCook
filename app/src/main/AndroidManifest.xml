@@ -10,21 +10,21 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
-    <!--Permiso para escribir (y leer) en el almacenamiento externo-->
+    <!-- Permiso para escribir (y leer) en el almacenamiento externo -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--Para indicar en google play que es necesario que el equipo cuente con camara para poder usar la app -->
-    <uses-feature android:name="android.hardware.camera"
+    <!-- Para indicar en google play que es necesario que el equipo cuente con camara para poder usar la app -->
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
-
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/frying_pan64"
+        android:icon="@mipmap/foreigncook64"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".actividades.InicioSesionActivity">
+        <activity android:name=".actividades.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,19 +36,18 @@
         <activity android:name=".actividades.RegistrarUsuarioActivity" />
         <activity android:name=".actividades.MisRecetasActivity" />
         <activity android:name=".actividades.VisualizarRecetaActivity" />
-        <activity android:name=".actividades.VerComentariosActivity"></activity>
+        <activity android:name=".actividades.VerComentariosActivity" />
+        <activity android:name=".actividades.InicioSesionActivity" />
 
         <provider
-            android:authorities="com.example.enriq.fileprovider"
             android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.enriq.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
-            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths">
-
-            </meta-data>
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
         </provider>
     </application>
-
-
 
 </manifest>

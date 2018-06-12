@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.enriq.recetario.R;
 import com.example.enriq.recetario.modelo.Usuario;
 import com.example.enriq.recetario.tareas.InicioSesionTask;
+import com.example.enriq.recetario.utilerias.ProxyBitmap;
 import com.example.enriq.recetario.utilerias.Validacion;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -58,7 +59,6 @@ public class InicioSesionActivity extends AppCompatActivity {
 
     public void cargarInicioSesion(Usuario usuario){
         if(usuario != null){
-            MenuPrincipalActivity.usuario = usuario;
             Toast.makeText(this,"BIENVENIDO", Toast.LENGTH_SHORT).show();
             Intent intento = new Intent(this,MenuPrincipalActivity.class);
             intento.putExtra("usuario",usuario);

@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import com.example.enriq.recetario.actividades.InicioSesionActivity;
 import com.example.enriq.recetario.modelo.Usuario;
 import com.example.enriq.recetario.utilerias.Constantes;
+import com.example.enriq.recetario.utilerias.ProxyBitmap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,6 +29,10 @@ public class UsuarioTask extends AsyncTask<Void,Void,Boolean> {
     public UsuarioTask(InicioSesionActivity actividad, String correo) {
         this.actividad = actividad;
         this.correo = correo;
+    }
+
+    public Bitmap getResizedBitmap(Bitmap image, int bitmapWidth, int bitmapHeight) {
+        return Bitmap.createScaledBitmap(image, bitmapWidth, bitmapHeight, true);
     }
 
     @Override
@@ -72,7 +77,8 @@ public class UsuarioTask extends AsyncTask<Void,Void,Boolean> {
         try{
             URL url = new URL(Constantes.URLImagenPerfil+usuario.getNombreImagen());
             Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            usuario.setBitsImagen(bmp);
+            ProxyBitmap proxyBitmap = new ProxyBitmap(getResizedBitmap(bmp,100,100));
+            usuario.setProxyBitmap(proxyBitmap);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {

@@ -78,6 +78,7 @@ public class PosteoRecetaActivity extends AppCompatActivity implements TaskCallB
         categorias.add("Almuerzo");
         categorias.add("Merienda");
         categorias.add("Snack");
+        categorias.add("Bebida");
         ArrayAdapter<String> adaptador = new ArrayAdapter<>(this,android.R.layout.simple_list_item_activated_1,categorias);
         adaptador.setDropDownViewResource(android.R.layout.simple_list_item_activated_1);
 
@@ -115,6 +116,8 @@ public class PosteoRecetaActivity extends AppCompatActivity implements TaskCallB
             ingredientes.setText(receta.getIngredientes());
             pasos.setText(receta.getPasos());
             descripcion.setText(receta.getDescripcion());
+            url.setText(receta.getLinkVideo());
+            imagen.setImageBitmap(receta.getBitmap().getBitmap());
             url.setText(receta.getLinkVideo());
         }else{
             receta = new Receta();
@@ -186,9 +189,11 @@ public class PosteoRecetaActivity extends AppCompatActivity implements TaskCallB
             Bundle extras = data.getExtras();
             foto = (Bitmap) extras.get("data");
             imagen.setImageBitmap(foto);
+            imagen.setTag("conFoto");
         }else if(requestCode==SELECT_FILE && resultCode == RESULT_OK){
             Uri ruta = data.getData();
             imagen.setImageURI(ruta);
+            imagen.setTag("conFoto");
             try {
                 foto = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(),ruta);
             } catch (IOException e) {
@@ -206,7 +211,7 @@ public class PosteoRecetaActivity extends AppCompatActivity implements TaskCallB
             receta.setIngredientes(ingredientes.getText().toString());
             receta.setPasos(pasos.getText().toString());
             receta.setLinkVideo(url.getText().toString());
-            receta.setCorreo(MenuPrincipalActivity.usuario.getCorreo());
+            receta.setCorreo(receta.getCorreo());
             receta.setImagenReceta(foto);
             new PosteoTask(receta,this).execute();
         }else{
@@ -291,7 +296,7 @@ public class PosteoRecetaActivity extends AppCompatActivity implements TaskCallB
 
     private boolean validarCamposObligatorios() {
         boolean validos = true;
-        if(nombre.getText().toString().trim().equals("") || ingredientes.getText().toString().trim().equals("") || pasos.getText().toString().trim().equals("")){
+        if(nombre.getText().toString().trim().equals("") || ingredientes.getText().toString().trim().equals("") || pasos.getText().toString().trim().equals("") || imagen.getTag().equals("sinFoto")){
             validos = false;
         }
 

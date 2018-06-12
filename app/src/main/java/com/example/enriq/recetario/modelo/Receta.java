@@ -2,13 +2,12 @@ package com.example.enriq.recetario.modelo;
 
 import android.graphics.Bitmap;
 
-import com.example.enriq.recetario.utilerias.ConvertidorBitmap;
+import com.example.enriq.recetario.utilerias.ProxyBitmap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.util.StringTokenizer;
 
 /**
  * Created by enriq on 02/05/2018.
@@ -16,7 +15,7 @@ import java.util.StringTokenizer;
 
 public class Receta implements Serializable{
     private Bitmap imagenReceta=null;
-    private ConvertidorBitmap bitmap;
+    private ProxyBitmap bitmap;
     private String nombreReceta="";
     private String descripcion="";
     private String ingredientes="";
@@ -40,11 +39,11 @@ public class Receta implements Serializable{
     }
 
 
-    public ConvertidorBitmap getBitmap() {
+    public ProxyBitmap getBitmap() {
         return bitmap;
     }
 
-    public void setBitmap(ConvertidorBitmap bitmap) {
+    public void setBitmap(ProxyBitmap bitmap) {
         this.bitmap = bitmap;
     }
 

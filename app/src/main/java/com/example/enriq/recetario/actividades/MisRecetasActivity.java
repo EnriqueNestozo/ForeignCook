@@ -18,21 +18,28 @@ import com.example.enriq.recetario.R;
 import com.example.enriq.recetario.modelo.Usuario;
 import com.example.enriq.recetario.tareas.RecetasTask;
 import com.example.enriq.recetario.modelo.Receta;
+import com.example.enriq.recetario.utilerias.ProxyBitmap;
 import com.example.enriq.recetario.utilerias.TaskCallBack;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MisRecetasActivity extends AppCompatActivity implements TaskCallBack{
     private RecyclerView myRecycleView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
-    private FloatingActionButton floatingActionButton;
     private List<Receta> recetas = new ArrayList<>();
     private List<Usuario> usuarios = new ArrayList<>();
     private TextView textViewlikesTotales;
     private TextView numeroRecetas;
+    private TextView nombre;
+    private TextView acercaDe;
+    private CircleImageView imageViewFotoPerfil;
     private Toolbar toolbar;
+    private Usuario usuario;
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -55,12 +62,21 @@ public class MisRecetasActivity extends AppCompatActivity implements TaskCallBac
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
-        floatingActionButton = findViewById(R.id.floatingActionButton);
+        usuario = new Usuario();
+        usuario = (Usuario) getIntent().getSerializableExtra("usuario");
+
+        imageViewFotoPerfil = findViewById(R.id.circleViewFotoPerfil);
         myRecycleView = findViewById(R.id.my_recycler_view);
         textViewlikesTotales = findViewById(R.id.textViewLikes);
         numeroRecetas = findViewById(R.id.textViewNumeroRecetas);
-        myRecycleView.setHasFixedSize(true);
+        nombre = findViewById(R.id.textViewNombre);
+        acercaDe = findViewById(R.id.textViewAcercaDe);
+        nombre.setText(usuario.getNombre());
+        acercaDe.setText(usuario.getDescripcion());
+        if(usuario.getProxyBitmap()!=null)
+            imageViewFotoPerfil.setImageBitmap(usuario.getProxyBitmap().getBitmap());
 
+        myRecycleView.setHasFixedSize(true);
         //se crea el manejador del layout
         mLayoutManager = new LinearLayoutManager(this);
 
@@ -68,8 +84,7 @@ public class MisRecetasActivity extends AppCompatActivity implements TaskCallBac
         myRecycleView.setLayoutManager(mLayoutManager);
 
         //se crea un nuevo adaptador con la lista de las recetas
-        mAdapter = new MyAdapter(recetas,usuarios);
-
+        mAdapter = new MyAdapter(recetas,usuarios,usuario);
         //se le asigna el adaptador a la vista
         myRecycleView.setAdapter(mAdapter);
 
@@ -78,6 +93,7 @@ public class MisRecetasActivity extends AppCompatActivity implements TaskCallBac
     @Override
     protected void onResume() {
         super.onResume();
+        mAdapter.notifyDataSetChanged();
         new RecetasTask(recetas,myRecycleView,this,usuarios,0).execute();
     }
 

@@ -77,15 +77,39 @@
                         android:text="Likes"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/textViewLikes"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="0" />
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/likeButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".05"
+                            android:scaleType="center"
+                            android:tag="dislike"
+                            card_view:srcCompat="@drawable/dislike" />
+
+                        <TextView
+                            android:id="@+id/textViewLikes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.90"
+                            android:text="0"
+                            android:textSize="24sp" />
+
+                        <ImageView
+                            android:id="@+id/commetsButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".05"
+                            card_view:srcCompat="@drawable/comment2" />
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
                         <Button

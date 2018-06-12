@@ -40,19 +40,19 @@
             android:layout_height="100dp"
             android:layout_below="@+id/imageView"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:src="@drawable/perro"
-            app:layout_constraintBottom_toBottomOf="@+id/imageViewFondo"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageViewFondo" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/textViewNombre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="20dp"
             android:text="Jorge Martinez Lopez"
             android:textColor="@android:color/background_light"
             android:textSize="20sp"
@@ -125,7 +125,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/imageViewFondo"
             app:layout_constraintEnd_toStartOf="@+id/textViewLikes"
             app:layout_constraintStart_toEndOf="@+id/textViewNumeroRecetas"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewNombre" />
 
         <TextView
             android:id="@+id/textViewAcercaDe"
@@ -143,7 +143,7 @@
             app:layout_constraintBottom_toTopOf="@+id/buttonEditar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/circleViewFotoPerfil"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewNombre" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.design.widget.FloatingActionButton

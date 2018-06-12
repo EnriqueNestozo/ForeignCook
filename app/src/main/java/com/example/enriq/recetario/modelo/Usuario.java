@@ -2,6 +2,8 @@ package com.example.enriq.recetario.modelo;
 
 import android.graphics.Bitmap;
 
+import com.example.enriq.recetario.utilerias.ProxyBitmap;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,6 +16,7 @@ public class Usuario implements Serializable{
     private String nombreImagen;
     private String contraseña;
     private transient Bitmap bitsImagen;
+    private ProxyBitmap proxyBitmap;
 
     public Bitmap getBitsImagen() {
         return bitsImagen;
@@ -101,5 +104,13 @@ public class Usuario implements Serializable{
         usuarioJSON += "}";
         
         return usuarioJSON;
+    }
+
+    public ProxyBitmap getProxyBitmap() {
+        return proxyBitmap;
+    }
+
+    public void setProxyBitmap(ProxyBitmap proxyBitmap) {
+        this.proxyBitmap = proxyBitmap;
     }
 }

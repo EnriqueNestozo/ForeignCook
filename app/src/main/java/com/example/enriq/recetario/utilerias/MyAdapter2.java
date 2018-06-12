@@ -1,26 +1,19 @@
 package com.example.enriq.recetario.utilerias;
 
-import android.content.DialogInterface;
+
 import android.content.Intent;
-import android.support.annotation.DrawableRes;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.enriq.recetario.R;
-import com.example.enriq.recetario.actividades.PosteoRecetaActivity;
 import com.example.enriq.recetario.actividades.VerComentariosActivity;
 import com.example.enriq.recetario.actividades.VisualizarRecetaActivity;
 import com.example.enriq.recetario.modelo.Receta;
 import com.example.enriq.recetario.modelo.Usuario;
-import com.example.enriq.recetario.tareas.EliminacionRecetaTask;
 import com.example.enriq.recetario.tareas.PosteoTask;
 
 import java.util.List;
@@ -33,6 +26,7 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> impl
     private List<Receta> recetas;
     private View.OnClickListener listener;
     private List<Usuario> usuarios;
+    private Usuario usuario;
 
     @Override
     public void onClick(View view) {
@@ -42,13 +36,14 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> impl
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        CardView cardView;
-        TextView nombreReceta;
-        TextView descripcion;
-        TextView textViewPublicador;
-        TextView textViewLikes;
-        ImageView likeButton;
-        ImageView commentsButton;
+        private CardView cardView;
+        private TextView nombreReceta;
+        private TextView descripcion;
+        private TextView textViewPublicador;
+        private TextView textViewLikes;
+        private ImageView likeButton;
+        private ImageView commentsButton;
+        private ImageView foto;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -59,12 +54,14 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> impl
             textViewLikes = itemView.findViewById(R.id.textViewLikes);
             likeButton = itemView.findViewById(R.id.likeButton);
             commentsButton = itemView.findViewById(R.id.commetsButton);
+            foto = itemView.findViewById(R.id.imageView);
         }
     }
 
-    public MyAdapter2(List<Receta> recetas,List<Usuario> usuarios) {
+    public MyAdapter2(List<Receta> recetas, List<Usuario> usuarios, Usuario usuario) {
         this.recetas = recetas;
         this.usuarios = usuarios;
+        this.usuario = usuario;
     }
 
     @Override
@@ -78,15 +75,17 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> impl
 
     @Override
     public void onBindViewHolder(final MyAdapter2.ViewHolder holder, final int position) {
+        System.out.println(position);
         holder.nombreReceta.setText(recetas.get(position).getNombreReceta());
         holder.descripcion.setText(recetas.get(position).getDescripcion());
         holder.textViewPublicador.setText(usuarios.get(position).getNombre());
         holder.textViewLikes.setText(Integer.toString(recetas.get(position).getLikes()));
+        holder.foto.setImageBitmap(recetas.get(position).getBitmap().getBitmap());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intento = new Intent(v.getContext(), VisualizarRecetaActivity.class);
-                intento.putExtra("Receta",recetas.get(position));
+                intento.putExtra("Receta",recetas.get(holder.getAdapterPosition()));
                 v.getContext().startActivity(intento);
             }
         });
@@ -94,7 +93,8 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.ViewHolder> impl
             @Override
             public void onClick(View view) {
                 Intent intento = new Intent(view.getContext(), VerComentariosActivity.class);
-                intento.putExtra("Receta",recetas.get(position));
+                intento.putExtra("Receta",String.valueOf(recetas.get(position).getIdReceta()));
+                intento.putExtra("usuario",usuario);
                 view.getContext().startActivity(intento);
             }
         });

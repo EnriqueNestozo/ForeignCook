@@ -102,10 +102,8 @@ public class PosteoTask extends AsyncTask<Void,Void,Boolean> {
 
     @Override
     protected void onPostExecute(final Boolean success) {
-
         if (success) {
-            context.hecho();
-            new SubirImagenRecetaTask(receta,receta.getImagenReceta()).execute();
+            new SubirImagenRecetaTask(context,receta,receta.getImagenReceta()).execute();
         } else {
 
         }
