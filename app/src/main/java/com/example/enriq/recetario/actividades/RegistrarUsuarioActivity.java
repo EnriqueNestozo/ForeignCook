@@ -39,12 +39,14 @@ public class RegistrarUsuarioActivity extends AppCompatActivity {
     private EditText tfNombreUsuario;
     private Bitmap archivo;
     private boolean edicion;
+    private Usuario usuario;
 
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar_usuario);
+        usuario = (Usuario)getIntent().getSerializableExtra("usuario");
         labelContrasena = findViewById(R.id.labelContrasena);
         labelReContrasena = findViewById(R.id.labelReContrasena);
         tfContraseña = findViewById(R.id.tfContraseña);
@@ -53,7 +55,7 @@ public class RegistrarUsuarioActivity extends AppCompatActivity {
         tfDescipcion = findViewById(R.id.tfDescripcion);
         tfNombreUsuario = findViewById(R.id.tfNombreUsuario);
         imagen = findViewById(R.id.imagen);
-        if(MenuPrincipalActivity.usuario != null){
+        if(usuario != null){
             imagen.setImageBitmap(MenuPrincipalActivity.usuario.getBitsImagen());
             tfContraseña.setVisibility(View.INVISIBLE);
             tfReContraseña.setVisibility(View.INVISIBLE);
@@ -63,6 +65,7 @@ public class RegistrarUsuarioActivity extends AppCompatActivity {
             tfNombreUsuario.setText(MenuPrincipalActivity.usuario.getNombre());
             tfDescipcion.setText(MenuPrincipalActivity.usuario.getDescripcion());
             edicion = true;
+            imagen.setImageBitmap(usuario.getProxyBitmap().getBitmap());
         }
     }
 

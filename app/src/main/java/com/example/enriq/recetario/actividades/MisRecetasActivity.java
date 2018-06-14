@@ -104,7 +104,8 @@ public class MisRecetasActivity extends AppCompatActivity implements TaskCallBac
     }
 
     public void editarPerfil(View view){
-        Intent intent = new Intent(this, InicioSesionActivity.class);
+        Intent intent = new Intent(this, RegistrarUsuarioActivity.class);
+        intent.putExtra("usuario",usuario);
         startActivity(intent);
     }
 
